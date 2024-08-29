@@ -1,50 +1,31 @@
-# React + TypeScript + Vite
+# SignLink - Frontend (React, Vite and TypeScript)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## [On development]
+### Developed by: Johandry Luna (BojackHorsemanYesIAmBojackHorseman)
 
-Currently, two official plugins are available:
+## What does this project have?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Initial Presentation screen
 
-## Expanding the ESLint configuration
+The first screen you will see when you visit the page (if you don’t have an account) is a user-friendly
+and descriptive interface offering options to <b>Sign In</b> or <b>Sign Up</b>.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### General AppLayout
 
-- Configure the top-level `parserOptions` property like this:
+This is the page that you will see once you have created your account (or signed in), it is a user-friendly and descriptive
+interface that includes a left navigation bar to explore the <b>SignLink</b> Tools.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+#### SignLink Tools
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+##### Social Media Functions
+<ul>
+  <li>Create an account</li>
+  <li>Add friend</li>
+  <li>Chat (including interactive notes designed to assist people with communication difficulties)</li>
+</ul>
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+##### Especial SignLink Tools
+<ul>
+  <li>Sign Language translate using the camera</li>
+  <li>Interactive voice system</li>
+</ul>
