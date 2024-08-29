@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background-color: black;
+}
+
+a{
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.center-all{
+  @apply justify-center items-center text-center
+}
+
+.title{
+  @apply text-2xl font-bold mb-5
+}
+
+.a-hover-1{
+  @apply hover:text-blue-400 cursor-pointer
+}
+
+.a-hover-2{
+  @apply hover:bg-zinc-950
+}
+
+.t-1{
+  transition: all 0.3s;
+}
