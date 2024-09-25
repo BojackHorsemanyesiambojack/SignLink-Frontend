@@ -2,30 +2,24 @@ import Form from "../../shared/constants/Form";
 import ThemedButton from "../../shared/constants/ThemedButton";
 import SignlinkLogo from "../../assets/Icons/logo.png";
 import { useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { signUpFormData, signUpFormDataCredentials, signUpFormProfile } from "./FormData";
+import { signUpFormData } from "./FormData";
+import fetches from "../../utils/fetching/fetches";
+import Sesions from "../../utils/sesions/Sesions";
+import { signInInput } from "../../models/AccountInput";
+import routes from "../../utils/api/routes";
+import { Session } from "../../models/Session";
 
 export default function SignUp() {
   const [accountData, setAccountData] = useState({
-    userName : '',
-    userBiography : '',
-    imageUrl : '',
-    firstName: '',
-    lastName : '',
-    birthDate: '',
-    Email : '',
-    Password: ''
+    UserEmail: "",
+    UserPassword: "",
+    UserName: "",
   });
+  const [isCreating, setIsCreating] = useState<boolean>(false);
 
-  const [actualForm, setActualForm] = useState<number>(0);
   const navigate = useNavigate();
-
-  const nextForm = () =>{
-    event?.preventDefault();
-    setActualForm(actualForm + 1)
-    console.log(accountData)
-  }
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -33,6 +27,36 @@ export default function SignUp() {
       ...accountData,
       [name]: value,
     });
+  };
+
+  const handleSubmit = async () => {
+    event?.preventDefault();
+    setIsCreating(true);
+    try {
+      const url = routes.signUpRoute;
+      const response: Response = await fetches.checkSesion(url, accountData);
+      if (!response.ok) {
+        const errorText = await response.text();
+        toast.error(`Error: ${response.statusText || errorText}`);
+      } else {
+        const newSession: Session = {
+          email: accountData.UserEmail,
+          password: accountData.UserPassword,
+          userName:accountData.UserName,
+          device:'',
+          created:new Date()
+        };
+        await Sesions.saveSession(newSession);
+        toast.success("Account created correctly");
+        if (await Sesions.sesionIsCreated()) {
+          navigate("/home");
+        }
+      }
+    } catch (error) {
+      toast.error(`Unknowed Error: ${error}`);
+    }finally{
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -44,40 +68,24 @@ export default function SignUp() {
           <img src={SignlinkLogo} alt="signLink logo" className="w-20" />
         </h2>
         <div className="w-full max-w-md bg-neutral-950 p-6 rounded-lg shadow-md">
-          {actualForm == 0?
-          <Form
-          Action=""
-          Map={signUpFormData}
-          HandleChange={handleChange}
-          OnSubmit={nextForm}
-          Values = {accountData}
-        />: actualForm == 1?
-        <Form
-            Action="POST"
-            Map={signUpFormDataCredentials}
-            HandleChange={handleChange}
-            OnSubmit={nextForm}
-            Values={accountData}
-          />
-          :
           <Form
             Action="POST"
-            Map={signUpFormProfile}
+            Map={signUpFormData}
             HandleChange={handleChange}
-            OnSubmit={nextForm}
+            OnSubmit={handleSubmit}
             Values={accountData}
+            isLoading = {isCreating}
           />
-        }
         </div>
         <div className="mt-6 text-gray-400">
           <p>Ya tienes una cuenta?</p>
         </div>
-        <ThemedButton
-          className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white"
-          onClick={() => navigate("/sign-in")}
-        >
-          Iniciar Sesion
-        </ThemedButton>
+          <ThemedButton
+            className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white"
+            onClick={() => navigate("/sign-in")}
+          >
+            Iniciar Sesion
+          </ThemedButton>
       </div>
     </div>
   );

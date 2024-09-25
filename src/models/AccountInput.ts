@@ -1,4 +1,4 @@
 export type signInInput = {
-    Email : string,
-    Password : string
+    UserEmail : string,
+    UserPassword : string
 }

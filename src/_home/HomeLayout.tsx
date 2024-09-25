@@ -2,72 +2,50 @@ import { Outlet, useNavigate } from "react-router-dom";
 import LeftNavBar from "../shared/nav/LeftNavBar";
 import { useEffect, useState } from "react";
 import Sesions from "../utils/sesions/Sesions";
-import { signInInput } from "../models/AccountInput";
-import fetches from "../utils/fetching/fetches";
-import { UserProfileDto } from "../shared/types/accounts";
 import toast, { Toaster } from "react-hot-toast";
+import { Session } from "../models/Session";
 
 export default function HomeLayout() {
-  const [session, setSession] = useState<signInInput>({
-    Email : '',
-    Password: ''
-  });
+  const [session, setSession] = useState<Session>({
+    email:'',
+    password:'',
+    device:'',
+    created:new Date(),
+    userName:''
+  })
 
-  const [sessionData, setSessionData] = useState<UserProfileDto>({
-    userId : 0,
-    userName : '',
-    userBiography : '',
-    imageUrl : '',
-    firstName: '',
-    lastName : '',
-    birthDate: ''
-  });
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const getUserData = async () => {
-    try {
-      const userData: UserProfileDto = await fetches.getSessionAccountData(session);
-      setSessionData(userData);
-    } catch (error) {
-      toast.error('Error fetching user data: ' + error);
-    } finally {
-      setLoading(false);
+const getUserDataAndRedirectIfAccountNotExists = async() => {
+  try{
+    const check = await Sesions.checkSession();
+    if(check){
+      const checkOnDb = await Sesions.checkAccountExists(check);
+    
+    if(!checkOnDb){
+      navigate('/get-started');
+      return;
     }
-  };
-
-  useEffect(() => {
-    const redirectIfSessionNotExists = async () => {
-      try {
-        const check = Sesions.checkSessionExistsAndRedirect();
-        if (check == null || check == undefined) {
-          navigate('/get-started');
-        } else {
-          const newSession: signInInput = {
-            Email: check.Email,
-            Password: check.Password
-          };
-          setSession(newSession);
-        }
-      } catch (error) {
-        toast.error('Error checking session: ' + error);
-        setLoading(false);
-      }
-    };
-
-    redirectIfSessionNotExists();
-  }, []);
-
-  useEffect(() => {
-    if (session.Email && session.Password) {
-      getUserData();
+    if(check){
+      setSession(check);
     }
-  }, [session]);
+  }
+  }catch(error){
+    toast.error(`${error}`)
+  }finally{
+    setLoading(false);
+  }
+}
+
+useEffect(() => {
+  getUserDataAndRedirectIfAccountNotExists();
+},[])
 
   return (
     <div className="text-white flex">
       <Toaster />
-        {loading? null : <LeftNavBar Session = {session} SessionData = {sessionData} />}
+        {loading? null : <LeftNavBar Session = {session} SessionData = {session} />}
         <main className="overflow-auto w-full h-screen">
             <Outlet />
         </main>

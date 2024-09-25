@@ -1,10 +1,11 @@
 import { ChangeEventHandler, FormEventHandler } from "react";
 import { Iform } from "../types/forms";
 import ThemedButton from "./ThemedButton";
+import { ClipLoader } from "react-spinners";
 
-export default function Form({Action, Map, HandleChange, OnSubmit, Values} :
+export default function Form({Action, Map, HandleChange, OnSubmit, Values, isLoading} :
     {Action:string, Map:Array<Iform>, HandleChange : ChangeEventHandler, OnSubmit : FormEventHandler
-      Values : any
+      Values : any, isLoading : boolean
     }) {
   return (
     <form action={Action} className="my-4 flex flex-col text-start gap-4" onSubmit={OnSubmit}>
@@ -20,7 +21,11 @@ export default function Form({Action, Map, HandleChange, OnSubmit, Values} :
             />
             </div>
         ))}
+        {isLoading?
+        <ClipLoader color="#36D7B7" />
+        :
         <ThemedButton><input type="submit" value={'Enviar'} /></ThemedButton>
+      }
     </form>
   )
 }

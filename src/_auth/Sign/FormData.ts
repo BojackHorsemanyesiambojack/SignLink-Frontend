@@ -7,45 +7,38 @@ export const signInFormData : Array<Iform> = [
         disabled : false,
         placeHolder : 'PolarBear@gmail.com',
         required: true,
-        valueName : 'Email'
+        valueName : 'UserEmail'
     },
     {
         label : 'Contrasena',
         type : 'password',
         disabled : false,
         required: true,
-        valueName: 'Password'
+        valueName: 'UserPassword'
     }
 ]
 
 export const signUpFormData : Array<Iform> = [
     {
-        label: 'Your Name',
+        label: 'Your Email',
         type: 'text',
         disabled:false,
         required:true,
-        valueName:'firstName',
+        valueName:'UserEmail',
     },
     {
-        label: 'Your Last Name',
-        type: 'text',
+        label: 'Your Password',
+        type: 'password',
         disabled:false,
         required:true,
-        valueName:'firstName',
+        valueName:'UserPassword',
     },
     {
         label: 'Your Nick',
         type: 'text',
         disabled:false,
         required:true,
-        valueName:'lastName',
-    },
-    {
-        label: 'Your BirthDate',
-        type: 'date',
-        disabled:false,
-        required:true,
-        valueName:'birthDate',
+        valueName:'UserName',
     }
 ]
 

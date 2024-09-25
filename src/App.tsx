@@ -1,24 +1,31 @@
+import { createContext, useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import AuthLayout from "./_auth/AuthLayout";
-import { useEffect, useState } from "react";
 import Presentation from "./_auth/presentation/Presentation";
 import SignIn from "./_auth/Sign/SignIn";
+import SignUp from "./_auth/Sign/SignUp";
+import DocsLayout from "./_docs/DocsLayout";
 import HomeLayout from "./_home/HomeLayout";
+import _Void_DeleteSession from "./_home/pages/_Void_DeleteSession";
 import Init from "./_home/pages/Init";
+import Messages from "./_home/pages/Messages";
+import Search from "./_home/pages/Search";
 import SignTraductor from "./_home/pages/SignTraductor";
 import Tools from "./_home/pages/Tools";
 import Sesions from "./utils/sesions/Sesions";
-import _Void_DeleteSession from "./_home/pages/_Void_DeleteSession";
-import Search from "./_home/pages/Search";
-import Messages from "./_home/pages/Messages";
-import Profile from "./_home/pages/Profile";
-import SignUp from "./_auth/Sign/SignUp";
+import MyProfile from "./_home/pages/MyProfile";
+import Profile from "./shared/constants/Profile";
 
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
-    const check = Sesions.checkSessionExistsAndRedirect();
-    check? navigate('/home') : navigate('/get-started');
+    const checkActualSession = async() => {
+      const check = await Sesions.checkSession();
+      if(!check){
+        navigate('/get-started')
+      }
+    }
+    checkActualSession();
   }, []);
 
   return (
@@ -29,13 +36,19 @@ function App() {
         <Route path="/sign-up" Component={SignUp} /> 
       </Route>
       <Route Component={HomeLayout}>
+        <Route path="/" Component={Init} />
         <Route path="/home" Component={Init} />
         <Route path="/tools/sign-traductor" Component={SignTraductor} />
         <Route path="/tools" Component={Tools} />
-        <Route path="/delete-session" Component={_Void_DeleteSession} />
         <Route path="/search" Component={Search} />
         <Route path="/messages" Component={Messages} />
-        <Route path="/my-profile" Component={Profile} />
+        <Route path="/my-profile" Component={MyProfile} />
+        <Route path="/tools/sign-learn" />
+        <Route path="/profiles/:userName" Component={Profile} />
+      </Route>
+      <Route Component={_Void_DeleteSession} path="/delete-session" />
+      <Route Component={DocsLayout}>
+        <Route path="/tools/docs"/>
       </Route>
     </Routes>
   );

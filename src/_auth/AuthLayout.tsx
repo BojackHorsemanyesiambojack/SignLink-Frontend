@@ -6,8 +6,11 @@ import Sesions from "../utils/sesions/Sesions";
 export default function AuthLayout() {
   const navigate = useNavigate();
   useEffect(() => {
-    const check = Sesions.checkSessionExistsAndRedirect();
-    check? navigate('/home') : null;
+    const checkActualSession = async() => {
+      const check = await Sesions.sesionIsCreated();
+      check? navigate('/home') : null;
+    }
+    checkActualSession();
   }, []);
   return (
     <>

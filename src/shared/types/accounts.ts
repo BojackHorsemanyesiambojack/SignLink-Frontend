@@ -5,5 +5,5 @@ export interface UserProfileDto {
     firstName: string;
     lastName: string;
     birthDate: string;
-    userBiography: string;
+    userBio: string;
   }

@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@avatechai/avatars": "^0.5.1",
     "@radix-ui/react-avatar": "^1.1.0",
+    "gh-pages": "^6.1.1",
     "js-cookie": "^3.0.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
@@ -24,6 +27,7 @@
     "react-hot-toast": "^2.4.1",
     "react-profile-avatar": "^1.0.0",
     "react-router-dom": "^6.26.1",
+    "react-spinners": "^0.14.1",
     "react-user-avatar": "^1.10.0",
     "react-webcam": "^7.2.0",
     "sort-by": "^0.0.2",
